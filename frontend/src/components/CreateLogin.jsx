@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const AdminLogin = () => {
+const CreateLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -19,18 +19,18 @@ const AdminLogin = () => {
     // Reset error if everything is filled
     setError("");
 
-    // Mock login logic (replace with actual API call or login logic)
-    console.log("Logging in with:", { username, password });
+    // Mock "account creation" logic (replace this with API calls to your backend)
+    console.log("Creating account with:", { username, password });
 
-    // Simulate successful login
-    setSuccess("Login successful!");
+    // Simulate successful account creation
+    setSuccess("Account created successfully!");
     setUsername("");
     setPassword("");
   };
 
   return (
-    <div className="login-form">
-      <h2>Login</h2>
+    <div className="register-form">
+      <h2>Create an Account</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username:</label>
@@ -56,10 +56,10 @@ const AdminLogin = () => {
         {error && <p style={{ color: "red" }}>{error}</p>}
         {success && <p style={{ color: "green" }}>{success}</p>}
 
-        <button type="submit">Login</button>
+        <button type="submit">Create Account</button>
       </form>
     </div>
   );
 };
 
-export default AdminLogin;
+export default CreateLogin;
