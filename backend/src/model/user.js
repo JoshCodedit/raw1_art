@@ -1,21 +1,33 @@
-const db = require("../database/db");
+import db from "../database/db.js"; // Correct import statement
 
-const insert_user = db.prepare(/*sql*/ `
-  INSERT INTO users (email, hash)
-  VALUES ($email, $hash)
-  RETURNING id
-`);
+// Function to create a new user
+export async function createUser(email, hash) {
+  const { data, error } = await db
+    .from("users") // Specify the table name
+    .insert([{ email, hash }]) // Insert an array of objects
+    .select("id") // Specify the columns you want to return
+    .single(); // Use .single() if you expect a single record
 
-function createUser(email, hash) {
-  return insert_user.get({ email, hash });
+  if (error) {
+    console.error("Error creating user:", error);
+    throw error; // Handle the error as needed
+  }
+
+  return data.id; // Return the ID of the newly created user
 }
 
-const select_user_by_email = db.prepare(/*sql*/ `
-  SELECT id, email, hash, created_at FROM users WHERE email = ?
-`);
+// Function to retrieve a user by email
+export async function getUserByEmail(email) {
+  const { data, error } = await db
+    .from("users")
+    .select("id, email, hash, created_at") // Specify the fields to select
+    .eq("email", email) // Filter by email
+    .single(); // Use .single() if you expect a single record
 
-function getUserByEmail(email) {
-  return select_user_by_email.get(email);
+  if (error) {
+    console.error("Error retrieving user by email:", error);
+    throw error; // Handle the error as needed
+  }
+
+  return data; // Return the retrieved user data
 }
-
-module.exports = { createUser, getUserByEmail };

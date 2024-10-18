@@ -1,6 +1,6 @@
-import { getUserByEmail } from "../model/user";
-import { createSession } from "../model/sessions";
-const bcrypt = require("bcryptjs");
+import { getUserByEmail } from "../model/user.js";
+import { createSession } from "../model/sessions.js";
+import bcrypt from "bcryptjs";
 
 function get(req, res) {
   const title = "Login";
@@ -45,4 +45,4 @@ async function post(req, res) {
   }
 }
 
-module.exports = { get, post };
+export default { get, post };
