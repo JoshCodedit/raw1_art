@@ -1,33 +1,47 @@
-import db from "../database/db.js"; // Correct import statement
+// src/model/user.js
+import db from "../../database/db.js"; // Ensure you add `.js` extension if using ES modules
+import bcrypt from "bcrypt"; // Import bcrypt for password hashing
 
-// Function to create a new user
-export async function createUser(email, hash) {
-  const { data, error } = await db
-    .from("users") // Specify the table name
-    .insert([{ email, hash }]) // Insert an array of objects
-    .select("id") // Specify the columns you want to return
-    .single(); // Use .single() if you expect a single record
+const createUser = async (email, password) => {
+  console.log("Attempting to create user with email:", email); // Debug log
 
-  if (error) {
-    console.error("Error creating user:", error);
-    throw error; // Handle the error as needed
+  const hashedPassword = await bcrypt.hash(password, 10);
+  console.log("Password hashed successfully"); // Debug log
+
+  const query = "INSERT INTO users (email, hashed_password) VALUES (?, ?)";
+
+  try {
+    const stmt = db.prepare(query);
+    console.log("Statement prepared"); // Debug log
+
+    const body = stmt.run(email, hashedPassword);
+    console.log("Insert operation completed with result:", body); // Debug log
+    console.log("User created successfully with ID:", body.lastInsertRowid);
+
+    // Verify the insert worked
+    const verifyStmt = db.prepare("SELECT * FROM users WHERE id = ?");
+    const inserted = verifyStmt.get(body.lastInsertRowid);
+    console.log("Verified inserted user:", inserted);
+
+    return body.lastInsertRowid;
+  } catch (err) {
+    console.error("Error creating user:", err);
+    console.error("Error details:", err.message); // More error details
+    throw err;
   }
+};
 
-  return data.id; // Return the ID of the newly created user
-}
+const getUserByEmail = (email) => {
+  const query = "SELECT id, email FROM users WHERE email = ?"; // Exclude hashed_password for security
 
-// Function to retrieve a user by email
-export async function getUserByEmail(email) {
-  const { data, error } = await db
-    .from("users")
-    .select("id, email, hash, created_at") // Specify the fields to select
-    .eq("email", email) // Filter by email
-    .single(); // Use .single() if you expect a single record
-
-  if (error) {
-    console.error("Error retrieving user by email:", error);
-    throw error; // Handle the error as needed
+  try {
+    const stmt = db.prepare(query);
+    const row = stmt.get(email); // Synchronously retrieves the user by email
+    return row; // Returns the user object if found
+  } catch (err) {
+    console.error("Error retrieving user by email:", err);
+    throw err;
   }
+};
 
-  return data; // Return the retrieved user data
-}
+export { createUser, getUserByEmail };
