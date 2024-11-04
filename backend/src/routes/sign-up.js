@@ -1,4 +1,4 @@
-import { createUser } from "../model/user.js"; // Adjust the path as necessary
+import { createUser } from "../model/user.js"; 
 
 export const signup = async (req, res) => {
   const { email, password } = req.body;

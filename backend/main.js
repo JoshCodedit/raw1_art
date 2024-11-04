@@ -1,12 +1,13 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
-import { signup } from "./src/routes/sign-up.js"; // Adjusted import for signup post method
+import cors from "cors";
+import { signup } from "./src/routes/sign-up.js";
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
-// Middleware for logging
+app.use(cors());
 app.use((req, res, next) => {
   const time = new Date().toLocaleTimeString("en-GB");
   console.log(`${time} ${req.method} ${req.url}`);
@@ -17,16 +18,13 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Route definitions
-app.post("/sign-up", signup); // Ensure this line is present and correct
+app.post("/sign-up", signup);
 
-// Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something went wrong!");
 });
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

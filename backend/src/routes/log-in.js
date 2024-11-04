@@ -24,7 +24,6 @@ export const login = async (req, res) => {
       return res.status(401).send("Invalid email or password.");
     }
 
-    // Here, you would typically create a session
     res.send("Logged in successfully");
   } catch (error) {
     console.error("Error during login:", error);

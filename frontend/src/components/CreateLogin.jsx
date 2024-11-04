@@ -38,7 +38,7 @@ const CreateLogin = () => {
   };
 
   const createAccount = async (email, password) => {
-    return fetch("/api/signup", {
+    return fetch("http://localhost:3000/sign-up", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
