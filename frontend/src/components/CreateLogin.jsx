@@ -1,30 +1,54 @@
 import React, { useState } from "react";
 
 const CreateLogin = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-    // Basic validation: check if fields are filled
-    if (!username || !password) {
-      setError("Please fill in both fields.");
-      setSuccess("");
+    if (!email || !password) {
+      setErrorMessage("Please fill in both fields.");
+      setSuccessMessage("");
       return;
     }
 
-    // Reset error if everything is filled
-    setError("");
+    setErrorMessage("");
 
-    // Mock "account creation" logic (replace this with API calls to your backend)
-    console.log("Creating account with:", { username, password });
+    try {
+      const response = await createAccount(email, password);
+      if (response.ok) {
+        const data = await response.json();
+        setSuccessMessage(data.message || "Account created successfully!");
+        resetForm();
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(
+          errorData.message || "Error creating account. Please try again."
+        );
+        setSuccessMessage("");
+      }
+    } catch (error) {
+      console.error("Error during account creation:", error);
+      setErrorMessage("Error creating account. Please try again.");
+      setSuccessMessage("");
+    }
+  };
 
-    // Simulate successful account creation
-    setSuccess("Account created successfully!");
-    setUsername("");
+  const createAccount = async (email, password) => {
+    return fetch("http://localhost:3000/sign-up", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+  };
+
+  const resetForm = () => {
+    setEmail("");
     setPassword("");
   };
 
@@ -33,12 +57,12 @@ const CreateLogin = () => {
       <h2>Create an Account</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="email">Email:</label>
           <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -53,8 +77,8 @@ const CreateLogin = () => {
           />
         </div>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        {success && <p style={{ color: "green" }}>{success}</p>}
+        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+        {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
 
         <button type="submit">Create Account</button>
       </form>
