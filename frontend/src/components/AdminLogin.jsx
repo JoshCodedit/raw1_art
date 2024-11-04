@@ -1,30 +1,33 @@
 import React, { useState } from "react";
 
 const AdminLoginComponent = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [fail, setFail] = useState("");
 
-  const handleSubmit = (e) => {
+  const userLogin = async (email, password) => {
+    return fetch("http://localhost:3001/log-in", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation: check if fields are filled
-    if (!username || !password) {
-      setError("Please fill in both fields.");
-      setSuccess("");
-      return;
+    const response = await userLogin(email, password);
+    if (response.ok) {
+      const data = await response.json();
+      setSuccess("Login successful!");
+    } else {
+      setFail("Login failed, please try again.");
     }
 
-    // Reset error if everything is filled
-    setError("");
-
-    // Mock login logic (replace with actual API call or login logic)
-    console.log("Logging in with:", { username, password });
-
-    // Simulate successful login
-    setSuccess("Login successful!");
-    setUsername("");
+    setEmail("");
     setPassword("");
   };
 
@@ -33,12 +36,12 @@ const AdminLoginComponent = () => {
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="email">Email:</label>
           <input
             type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -53,8 +56,8 @@ const AdminLoginComponent = () => {
           />
         </div>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
         {success && <p style={{ color: "green" }}>{success}</p>}
+        {fail && <p style={{ color: "red" }}>{fail}</p>}
 
         <button type="submit">Login</button>
       </form>

@@ -32,15 +32,27 @@ const createUser = async (email, password) => {
 };
 
 const getUserByEmail = (email) => {
-  const query = "SELECT id, email FROM users WHERE email = ?"; // Exclude hashed_password for security
+  console.log("Attempting to retrieve user by email:", email); // Debug log
 
+  const query = "SELECT id, email, hashed_password FROM users WHERE email = ?";
   try {
+    console.log("Preparing SQL statement..."); // Debug log
     const stmt = db.prepare(query);
+
+    console.log("Executing SQL statement with email:", email); // Debug log
     const row = stmt.get(email); // Synchronously retrieves the user by email
-    return row; // Returns the user object if found
+
+    if (row) {
+      console.log("User found:", row); // Debug log if user is found
+    } else {
+      console.log("No user found with email:", email); // Debug log if no user is found
+    }
+
+    return row; // Returns the user object if found, or `undefined` if not
   } catch (err) {
     console.error("Error retrieving user by email:", err);
-    throw err;
+    console.error("Error details:", err.message); // Detailed error message
+    throw err; // Re-throw the error for handling in higher-level functions
   }
 };
 
