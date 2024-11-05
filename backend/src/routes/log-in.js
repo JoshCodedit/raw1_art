@@ -1,5 +1,6 @@
 import { getUserByEmail } from "../model/user.js";
 import bcrypt from "bcryptjs"; // Ensure bcrypt version matches your implementation
+import { createSession } from "../model/sessions.js";
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
@@ -20,7 +21,9 @@ export const login = async (req, res) => {
       return res.status(401).json({ error: "Invalid email or password." });
     }
 
-    return res.json({ message: "Logged in successfully" });
+    const sessionId = createSession(user.id);
+
+    return res.json({ message: "Logged in successfully", sessionId });
   } catch (error) {
     console.error("Error during login:", error);
     return res.status(500).json({ error: "Internal Server Error" });

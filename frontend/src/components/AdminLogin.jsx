@@ -22,7 +22,10 @@ const AdminLoginComponent = () => {
     const response = await userLogin(email, password);
     if (response.ok) {
       const data = await response.json();
+      // Store the session ID in localStorage
+      localStorage.setItem("sessionId", data.sessionId); // Adjust this line based on your API response
       setSuccess("Login successful!");
+      // Optionally redirect to the dashboard
     } else {
       setFail("Login failed, please try again.");
     }
