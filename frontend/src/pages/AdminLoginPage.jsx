@@ -15,15 +15,17 @@ const AdminLogin = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
-      <h2 className="text-2xl font-bold text-red-600 mb-6">Admin Login</h2>
       {isCreateLoginVisible ? (
         <>
+          <h2 className="text-2xl font-bold text-main-purple mb-6">
+            Create An Account
+          </h2>
           <CreateLogin />
           <p className="mt-4 text-gray-700">
-            Have an account?{" "}
+            Already have an account?{" "}
             <span
               onClick={handleHaveAccountClick}
-              className="text-blue-500 cursor-pointer underline hover:text-blue-700 transition duration-200"
+              className="text-main-purple cursor-pointer underline hover:text-blue-700 transition duration-200"
             >
               Click here to login
             </span>
@@ -31,13 +33,15 @@ const AdminLogin = () => {
         </>
       ) : (
         <>
-          <p className="mt-4 text-gray-700">Welcome Back. Please login:</p>
+          <h2 className="text-2xl font-bold text-main-purple mb-6">
+            Welcome Back. Please Login
+          </h2>
           <AdminLoginComponent />
           <p className="mt-4 text-gray-700">
             New user?{" "}
             <span
               onClick={handleNewUserClick}
-              className="text-blue-500 cursor-pointer underline hover:text-blue-700 transition duration-200"
+              className="text-main-purple cursor-pointer underline hover:text-blue-700 transition duration-200"
             >
               Create Account
             </span>

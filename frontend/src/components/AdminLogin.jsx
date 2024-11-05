@@ -32,34 +32,40 @@ const AdminLoginComponent = () => {
   };
 
   return (
-    <div className="login-form">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="bg-white p-6 rounded shadow-md w-full max-w-md mx-auto">
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
         <div>
-          <label htmlFor="email">Email:</label>
           <input
             type="text"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            placeholder="Email" // Placeholder for email input
+            className="bg-gray-100 h-14 px-4 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-main-purple w-full"
           />
         </div>
         <div>
-          <label htmlFor="password">Password:</label>
           <input
             type="password"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            placeholder="Password" // Placeholder for password input
+            className="bg-gray-100 h-14 px-4 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-main-purple w-full"
           />
         </div>
 
-        {success && <p style={{ color: "green" }}>{success}</p>}
-        {fail && <p style={{ color: "red" }}>{fail}</p>}
+        {success && <p className="text-green-500 text-sm">{success}</p>}
+        {fail && <p className="text-red-500 text-sm">{fail}</p>}
 
-        <button type="submit">Login</button>
+        <button
+          className="bg-main-purple w-full h-14 text-white rounded"
+          type="submit"
+        >
+          Login
+        </button>
       </form>
     </div>
   );

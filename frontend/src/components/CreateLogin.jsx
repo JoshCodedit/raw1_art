@@ -53,34 +53,42 @@ const CreateLogin = () => {
   };
 
   return (
-    <div className="register-form">
-      <h2>Create an Account</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="bg-white p-6 rounded shadow-md w-full max-w-md mx-auto">
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
         <div>
-          <label htmlFor="email">Email:</label>
           <input
             type="email"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            placeholder="Email" // Placeholder for email input
+            className="bg-gray-100 h-14 px-4 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-main-purple w-full"
           />
         </div>
         <div>
-          <label htmlFor="password">Password:</label>
           <input
             type="password"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            placeholder="Password" // Placeholder for password input
+            className="bg-gray-100 h-14 px-4 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-main-purple w-full"
           />
         </div>
 
-        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-        {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+        {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+        {successMessage && (
+          <p className="text-green-500 text-sm">{successMessage}</p>
+        )}
 
-        <button type="submit">Create Account</button>
+        <button
+          className="bg-main-purple w-full h-14 text-white rounded"
+          type="submit"
+        >
+          Create Account
+        </button>
       </form>
     </div>
   );
