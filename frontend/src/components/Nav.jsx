@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export default function Nav() {
   return (
-    <div className="flex flex-col h-screen w-64 bg-gray-800 text-white">
+    <div className="flex flex-col h-screen w-64 bg-user-dash-main text-white">
       <nav className="flex flex-col mt-4">
         <NavLink
           to="/dashboard"

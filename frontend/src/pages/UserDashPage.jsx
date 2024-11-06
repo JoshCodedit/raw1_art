@@ -1,9 +1,10 @@
 import Nav from "../components/Nav";
+import UserHeader from "../components/UserHeader";
 
 const UserDash = () => {
   return (
     <>
-      <h1>Hello Wrld</h1>
+      <UserHeader />
       <Nav />
     </>
   );

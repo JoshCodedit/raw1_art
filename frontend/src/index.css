@@ -4,7 +4,7 @@
 
 @layer components {
   .user-nav-link {
-    @apply flex items-center px-4 h-[50px] text-gray-300 hover:bg-gray-700 hover:text-white;
+    @apply flex items-center px-4 h-[50px] text-white hover:bg-gray-700 hover:text-white;
   }
 
   .user-nav-link-active {
