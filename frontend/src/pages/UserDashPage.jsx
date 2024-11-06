@@ -1,5 +1,13 @@
+import Nav from "../components/Nav";
+import UserHeader from "../components/UserHeader";
+
 const UserDash = () => {
-  return <h1>Hello World</h1>;
+  return (
+    <>
+      <UserHeader />
+      <Nav />
+    </>
+  );
 };
 
 export default UserDash;

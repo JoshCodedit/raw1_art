@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Link, Navigate } from "react-router-dom";
 import AdminLoginComponent from "../components/AdminLogin";
 import CreateLogin from "../components/CreateLogin";
 
 const AdminLogin = () => {
   const [isCreateLoginVisible, setIsCreateLoginVisible] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const sessionId = localStorage.getItem("sessionId");
+
+    if (sessionId) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const handleNewUserClick = () => {
     setIsCreateLoginVisible(true);
@@ -12,6 +22,10 @@ const AdminLogin = () => {
   const handleHaveAccountClick = () => {
     setIsCreateLoginVisible(false);
   };
+
+  if (isLoggedIn) {
+    return <Navigate to="/UserDash" replace />;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">

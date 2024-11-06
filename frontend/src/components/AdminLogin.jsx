@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
 
 const AdminLoginComponent = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState("");
   const [fail, setFail] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
 
   const userLogin = async (email, password) => {
     return fetch("http://localhost:3001/log-in", {
@@ -22,7 +24,9 @@ const AdminLoginComponent = () => {
     const response = await userLogin(email, password);
     if (response.ok) {
       const data = await response.json();
+      localStorage.setItem("sessionId", data.sessionId); // Store session ID
       setSuccess("Login successful!");
+      setIsLoggedIn(true); // Set login state to true
     } else {
       setFail("Login failed, please try again.");
     }
@@ -30,6 +34,11 @@ const AdminLoginComponent = () => {
     setEmail("");
     setPassword("");
   };
+
+  // Render the redirect if logged in
+  if (isLoggedIn) {
+    return <Navigate to="/UserDash" replace />;
+  }
 
   return (
     <div className="bg-white p-6 rounded shadow-md w-full max-w-md mx-auto">

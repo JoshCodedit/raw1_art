@@ -1,0 +1,52 @@
+# Node.js dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+
+# Supabase related secrets
+.supabase
+
+# Database files
+*.sqlite
+*.db
+
+# Build directories
+/build
+/dist
+
+# Temporary files and caches
+/tmp
+/.temp
+/.cache
+
+# Nodemon configuration
+/nodemon.json
+
+# ESLint cache
+.eslintcache
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files (VSCode, etc.)
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Coverage files
+/coverage
+
+# Debug output
+debug.log
