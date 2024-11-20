@@ -8,6 +8,6 @@
   }
 
   .user-nav-link-active {
-    @apply bg-gray-700 text-white;
+    @apply bg-gray-100 text-black  hover:bg-white hover:text-black;
   }
 }
