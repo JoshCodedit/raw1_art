@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { signup } from "./src/routes/sign-up.js";
 import { login } from "./src/routes/log-in.js";
+import { addProduct } from "./src/routes/addProduct.js";
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("/sign-up", signup);
 app.post("/log-in", login);
+app.post("/products", addProduct);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

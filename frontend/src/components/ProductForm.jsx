@@ -76,7 +76,7 @@ export default function ProductForm() {
 
   return (
     <form
-      className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6 space-y-6"
+      className="max-w-3xl mt-16 mx-auto bg-white shadow-lg rounded-lg p-6 space-y-6"
       id="product-form"
       onSubmit={handleSubmit}
       encType="multipart/form-data"
