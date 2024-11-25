@@ -20,22 +20,22 @@ CREATE TABLE IF NOT EXISTS products (
     description TEXT,
     category TEXT NOT NULL,
     price DECIMAL NOT NULL,
-    stock INTEGER NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+    stock INTEGER NOT NULL DEFAULT 0, -- Default stock is 0
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS variants (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    product_id INTEGER NOT NULL,  
-    color TEXT,                   
-    size TEXT,                    
-    additional_price DECIMAL DEFAULT 0, 
-    stock INTEGER NOT NULL, 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-    FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE 
+    product_id INTEGER NOT NULL,
+    color TEXT,
+    size TEXT,
+    additional_price DECIMAL DEFAULT 0,
+    stock INTEGER NOT NULL DEFAULT 0, -- Default stock is 0
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
 );
 
-CREATE TABLE product_images (
+CREATE TABLE IF NOT EXISTS product_images (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     product_id INTEGER NOT NULL,
     image_url TEXT NOT NULL,

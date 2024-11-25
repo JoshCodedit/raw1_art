@@ -1,37 +1,34 @@
-import AWS from 'aws-sdk';
-import dotenv from 'dotenv';
+import fs from 'fs';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';  // Import necessary modules
 
-dotenv.config();
 
-const s3 = new AWS.S3({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+// Configure S3 client
+const s3Client = new S3Client({
     region: process.env.AWS_REGION,
-  });
-  
-  /**
-   * Function to upload an image to S3
-   * @param {Buffer} fileBuffer - The file buffer to upload
-   * @param {string} fileName - The name of the file to be saved in S3
-   * @returns {Promise} - Resolves to the URL of the uploaded image
-   */
-  
-  export function uploadToS3(fileBuffer, fileName) {
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    },
+});
+
+// Upload the file to S3
+export const uploadToS3 = async (filePath, fileName) => {
+    const fileContent = fs.readFileSync(filePath);  // Read the image file
+
     const params = {
-      Bucket: process.env.AWS_BUCKET_NAME,
-      Key: fileName,  // You can customize the file name here
-      Body: fileBuffer,
-      ACL: 'public-read', // Make the image publicly accessible
-      ContentType: 'image/jpeg', // Change based on your file type
+        Bucket: process.env.AWS_BUCKET_NAME,  // Your S3 bucket name
+        Key: `products/${Date.now()}_${fileName}`,  // Generate a unique name or timestamp for the file
+        Body: fileContent,  // The actual file content to upload
+        ContentType: 'image/jpeg'  // Adjust this based on the file type (e.g., 'image/png', 'image/jpeg')
     };
-  
-    return s3.upload(params).promise()
-      .then(data => {
-        console.log('File uploaded successfully', data.Location);
-        return data.Location; // The URL of the uploaded file
-      })
-      .catch(err => {
-        console.error('Error uploading file:', err);
-        throw new Error('S3 upload failed');
-      });
-  }
+
+    try {
+        // Use S3Client to upload the file
+        const data = await s3Client.send(new PutObjectCommand(params));
+        console.log('S3 Upload Response:', data);
+        return `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${params.Key}`; // Return the file URL
+    } catch (err) {
+        console.error('Error uploading file to S3:', err);
+        throw new Error('Error uploading file to S3');
+    }
+};
