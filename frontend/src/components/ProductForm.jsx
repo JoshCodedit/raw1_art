@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export default function ProductForm() {
   const [variants, setVariants] = useState([{ color: "", size: "", price: 0, stock: 0 }]);
@@ -11,6 +11,8 @@ export default function ProductForm() {
     stock: 0,
     image: null,
   });
+
+  const fileInputRef = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,12 +61,24 @@ export default function ProductForm() {
     });
 
     try {
-      const response = await fetch("/upload-product", {
+      const response = await fetch("http://localhost:3001/products", {
         method: "POST",
         body: data,
       });
       if (response.ok) {
         alert("Product added successfully!");
+        setFormData({
+          name: "",
+          description: "",
+          category: "hoodie",
+          price: 0,
+          stock: 0,
+          image: null,
+        });
+        setVariants([{ color: "", size: "", price: 0, stock: 0 }]);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
       } else {
         alert("Failed to add product.");
       }
@@ -149,20 +163,7 @@ export default function ProductForm() {
             className="mt-1 border-gray-300 p-1 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           />
         </div>
-        <div>
-          <label htmlFor="product-stock" className="text-sm font-medium text-gray-700">
-            Total Stock
-          </label>
-          <input
-            type="number"
-            id="product-stock"
-            name="stock"
-            value={formData.stock}
-            onChange={handleChange}
-            required
-            className="mt-1 border-gray-300 rounded-md p-1 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          />
-        </div>
+        
       </div>
 
       {/* Variants Section */}
@@ -223,10 +224,9 @@ export default function ProductForm() {
         ))}
       </div>
 
-      {/* Image Upload */}
       <div>
         <label htmlFor="product-image" className="text-sm font-medium text-gray-700">
-          Product Image (Optional)
+          Product Image 
         </label>
         <input
           type="file"
@@ -234,13 +234,14 @@ export default function ProductForm() {
           name="image"
           accept="image/*"
           onChange={handleFileChange}
+          ref={fileInputRef}
           className="mt-1 block"
         />
       </div>
 
-      {/* Submit Button */}
       <button
         type="submit"
+        onClick={handleSubmit}
         className="w-full py-2 bg-user-dash-main text-white font-semibold rounded-md "
       >
         Add Product
