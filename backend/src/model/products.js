@@ -1,8 +1,8 @@
 import db from "../../database/db.js"; 
 import { uploadToS3 } from "../utils/s3.js";  // Assuming this handles S3 logic
 
-export async function addProducts(product, variants = [], image = null) {
-    const { name, description, category, price, stock } = product;
+export async function addProducts(product, variants = []) {
+    const { name, description, category, price, stock, imageUrl } = product;
 
     const productQuery = `
         INSERT INTO products (name, description, category, price, stock)
@@ -21,14 +21,6 @@ export async function addProducts(product, variants = [], image = null) {
         const result = productStmt.run(name, description, category, price, stock);
         const productId = result.lastInsertRowid; // Get the product ID
 
-        // If image is provided, upload it to S3 and get the image URL
-        let imageUrl = null;
-        if (image) {
-            const fileBuffer = image.data;  // Image data from request
-            const fileName = `product-images/${Date.now()}-${image.name}`; // Generate unique file name
-            imageUrl = await uploadToS3(fileBuffer, fileName);  // Upload image and get URL
-        }
-
         // Insert the image URL into the product_images table
         if (imageUrl) {
             const imageQuery = `
@@ -36,7 +28,7 @@ export async function addProducts(product, variants = [], image = null) {
                 VALUES (?, ?)
             `;
             const imageStmt = db.prepare(imageQuery);
-            imageStmt.run(productId, imageUrl);  // Insert product_id and image_url
+            imageStmt.run(productId, imageUrl);
         }
 
         // Insert variants if provided
