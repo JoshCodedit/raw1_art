@@ -4,7 +4,7 @@ export const signup = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const userId = await createUser(email, password); // Hashing occurs in createUser
+    const userId = await createUser(email, password); 
     res.status(201).json({ message: "User created successfully", userId });
   } catch (error) {
     console.error("Error creating user:", error);

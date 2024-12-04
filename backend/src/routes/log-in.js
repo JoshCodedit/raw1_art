@@ -1,5 +1,5 @@
 import { getUserByEmail } from "../model/user.js";
-import bcrypt from "bcryptjs"; // Ensure bcrypt version matches your implementation
+import bcrypt from "bcryptjs"; 
 import { createSession } from "../model/sessions.js";
 
 export const login = async (req, res) => {

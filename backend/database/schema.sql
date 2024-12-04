@@ -8,10 +8,39 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS sessions (
-    id VARCHAR(24) PRIMARY KEY, -- Adjusted to accommodate Base64 encoding
-    user_id INTEGER NOT NULL,    -- This references the users table
+    id VARCHAR(24) PRIMARY KEY, 
+    user_id INTEGER NOT NULL,    
     expires_at TIMESTAMP NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE -- Ensures session is removed if user is deleted
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE 
+);
+
+CREATE TABLE IF NOT EXISTS products (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    description TEXT,
+    category TEXT NOT NULL,
+    price DECIMAL NOT NULL,
+    stock INTEGER NOT NULL DEFAULT 0, -- Default stock is 0
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS variants (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    product_id INTEGER NOT NULL,
+    color TEXT,
+    size TEXT,
+    additional_price DECIMAL DEFAULT 0,
+    stock INTEGER NOT NULL DEFAULT 0, -- Default stock is 0
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS product_images (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    product_id INTEGER NOT NULL,
+    image_url TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
 );
 
 COMMIT;

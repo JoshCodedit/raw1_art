@@ -1,42 +1,32 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 export default function Nav() {
+  const location = useLocation();
+
+  // Function to check if the current link is active
+  const getLinkClass = (path) => {
+    return location.pathname === path ? "user-nav-link user-nav-link-active" : "user-nav-link";
+  };
+
   return (
     <div className="flex flex-col h-screen w-64 bg-user-dash-main text-white">
-      <nav className="flex flex-col mt-4 ">
-        <NavLink
-          to="/dashboard"
-          className={({ isActive }) =>
-            `user-nav-link ${isActive ? "user-nav-link-active" : ""}`
-          }
-        >
+      <nav className="flex flex-col mt-[72px]">
+        <Link to="/dashboard" className={getLinkClass("/dashboard")}>
           Dashboard
-        </NavLink>
-        <NavLink
-          to="/products"
-          className={({ isActive }) =>
-            `user-nav-link ${isActive ? "user-nav-link-active" : ""}`
-          }
-        >
+        </Link>
+
+        <Link to="/products" className={getLinkClass("/products")}>
           Products
-        </NavLink>
-        <NavLink
-          to="/orders"
-          className={({ isActive }) =>
-            `user-nav-link ${isActive ? "user-nav-link-active" : ""}`
-          }
-        >
+        </Link>
+
+        <Link to="/orders" className={getLinkClass("/orders")}>
           Orders
-        </NavLink>
-        <NavLink
-          to="/settings"
-          className={({ isActive }) =>
-            `user-nav-link ${isActive ? "user-nav-link-active" : ""}`
-          }
-        >
+        </Link>
+
+        <Link to="/settings" className={getLinkClass("/settings")}>
           Settings
-        </NavLink>
+        </Link>
       </nav>
     </div>
   );
