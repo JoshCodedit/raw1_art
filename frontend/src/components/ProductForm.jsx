@@ -6,7 +6,7 @@ export default function ProductForm() {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    category: "hoodie",
+    category: "Select a category",
     price: 0,
     stock: 0,
     image: null,
@@ -70,7 +70,7 @@ export default function ProductForm() {
         setFormData({
           name: "",
           description: "",
-          category: "hoodie",
+          category: "Select a category",
           price: 0,
           stock: 0,
           image: null,
@@ -108,14 +108,14 @@ export default function ProductForm() {
           value={formData.name}
           onChange={handleChange}
           required
-          className="mt-1 p-2 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 p-2 border border-gray-400 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
         />
       </div>
 
       {/* Description */}
       <div className="flex flex-col">
         <label htmlFor="product-description" className="text-sm font-medium text-gray-700">
-          Description
+          Description:
         </label>
         <textarea
           id="product-description"
@@ -123,13 +123,13 @@ export default function ProductForm() {
           value={formData.description}
           onChange={handleChange}
           required
-          className="mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 p-2 border border-gray-400 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
         ></textarea>
       </div>
 
       <div className="flex flex-col">
         <label htmlFor="product-category" className="text-sm font-medium text-gray-700">
-          Category
+          Category:
         </label>
         <select
           id="product-category"
@@ -137,8 +137,9 @@ export default function ProductForm() {
           value={formData.category}
           onChange={handleChange}
           required
-          className="mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 border border-gray-400 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
         >
+          <option value="Select a category">Select a category</option>
           <option value="hoodie">Hoodie</option>
           <option value="hat">Hat</option>
           <option value="t-shirt">T-shirt</option>
@@ -150,17 +151,30 @@ export default function ProductForm() {
       {/* Price and Stock */}
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label htmlFor="product-price" className="text-sm font-medium text-gray-700">
-            Price
+          <label htmlFor="product-price" className="text-sm font-medium mr-1 text-gray-700">
+            Price: £
           </label>
           <input
-            type="number"
+            type="text"
             id="product-price"
             name="price"
             value={formData.price}
-            onChange={handleChange}
+            onChange={(e) => {
+              // Only allow numbers and one decimal point
+              const value = e.target.value.replace(/[^0-9.]/g, '');
+              // Ensure only one decimal point
+              const decimalCount = (value.match(/\./g) || []).length;
+              if (decimalCount <= 1) {
+                setFormData(prev => ({
+                  ...prev,
+                  price: value
+                }));
+              }
+            }}
+            pattern="^\d*\.?\d{0,2}$"
+            placeholder="0.00"
             required
-            className="mt-1 border-gray-300 p-1 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="mt-1 border border-gray-400 p-1 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           />
         </div>
         
@@ -173,8 +187,8 @@ export default function ProductForm() {
           <div key={index} className="border rounded-lg p-4 space-y-2">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor={`variant-color-${index}`} className="text-sm font-medium text-gray-700">
-                  Color
+                <label htmlFor={`variant-color-${index}`} className="text-sm font-medium mr-1 text-gray-700">
+                  Color:
                 </label>
                 <input
                   type="text"
@@ -182,19 +196,19 @@ export default function ProductForm() {
                   name="color"
                   value={variant.color}
                   onChange={(e) => handleVariantChange(index, e)}
-                  className="mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="mt-1 p-2 border border-gray-400 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label htmlFor={`variant-size-${index}`} className="text-sm font-medium text-gray-700">
-                  Size
+                <label htmlFor={`variant-size-${index}`} className="text-sm font-medium mr-1 text-gray-700">
+                  Size:
                 </label>
                 <select
                   id={`variant-size-${index}`}
                   name="size"
                   value={variant.size}
                   onChange={(e) => handleVariantChange(index, e)}
-                  className="mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="mt-1 border border-gray-400 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 >
                   <option value="Small">Small</option>
                   <option value="Medium">Medium</option>
@@ -207,8 +221,8 @@ export default function ProductForm() {
             <div className="grid grid-cols-2 gap-4">
              
               <div>
-                <label htmlFor={`variant-stock-${index}`} className="text-sm font-medium text-gray-700">
-                  Quantity
+                <label htmlFor={`variant-stock-${index}`} className="text-sm font-medium mr-1 text-gray-700">
+                  Quantity:
                 </label>
                 <input
                   type="number"
@@ -216,7 +230,7 @@ export default function ProductForm() {
                   name="stock"
                   value={variant.stock}
                   onChange={(e) => handleVariantChange(index, e)}
-                  className="mt-1 p-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="mt-1 p-1 border border-gray-400 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
             </div>
