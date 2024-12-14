@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import AdminLoginComponent from "../components/AdminLogin";
-import CreateLogin from "../components/CreateLogin";
+import AdminLoginComponent from "../../components/AdminLogin";
+import CreateLogin from "../../components/CreateLogin";
 
 const AdminLogin = () => {
   const [isCreateLoginVisible, setIsCreateLoginVisible] = useState(false);
